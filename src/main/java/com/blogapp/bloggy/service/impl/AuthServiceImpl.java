@@ -9,6 +9,8 @@ import com.blogapp.bloggy.repository.RoleRepository;
 import com.blogapp.bloggy.repository.UserRepository;
 import com.blogapp.bloggy.security.JwtTokenProvider;
 import com.blogapp.bloggy.service.AuthService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,6 +46,10 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.generateToken(authentication);
         return token;
+    }
+
+    public String getUsername(String token) {
+        return jwtTokenProvider.getUsername(token);
     }
 
     @Override

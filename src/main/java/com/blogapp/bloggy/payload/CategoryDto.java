@@ -14,7 +14,7 @@ public class CategoryDto {
     private long id;
     @NotEmpty
     private String name;
-    private String description;
+//    private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

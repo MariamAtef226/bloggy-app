@@ -81,9 +81,6 @@ public class CommentServiceImpl implements CommentService {
         if(commentDto.getName()  != null){
             comment.setName(commentDto.getName());
         }
-        if(commentDto.getEmail() != null){
-            comment.setEmail(commentDto.getEmail());
-        }
         Comment updatedComment = commentRepository.save(comment);
         return mapToDto(updatedComment);
         // A Cleaner code can be using modelmapper package --> to be studied later on

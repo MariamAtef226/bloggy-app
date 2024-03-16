@@ -1,5 +1,7 @@
 package com.blogapp.bloggy.payload;
 
+import com.blogapp.bloggy.entity.Category;
+import com.blogapp.bloggy.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -24,17 +26,21 @@ public class PostDto {
     @Size(min = 2, message = "Post title should have at least 2 characters")
     private String title;
 
-    @Schema(
-            description = "Post Description"
-    )
-    private String description;
+//    @Schema(
+//            description = "Post Description"
+//    )
+//    private String description;
 
     @NotEmpty
     @Size(max = 2000, message = "Post content's length shouldn't exceed 2000 characters")
     private String content;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Set<CommentDto> comments;
 
+    private Set<CommentDto> comments;
+    private Long userId;
     private Long categoryId;
+    private String userName;
+    private String categoryName;
 }

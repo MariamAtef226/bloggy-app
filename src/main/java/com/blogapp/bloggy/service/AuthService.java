@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 public interface AuthService {
     String login(LoginDto loginDto);
     String register(SignupDto signupDto);
+    String getUsername(String token);
+
+
 }

@@ -22,7 +22,7 @@ public class Post {
     private long id;
     @Column(nullable=false)
     private String title;
-    private  String description;
+//    private  String description;
     private String content;
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -38,5 +38,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id", nullable = false) // post must belong to a category
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 }

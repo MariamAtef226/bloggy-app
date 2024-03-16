@@ -23,7 +23,6 @@ public class Category
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String Description;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

@@ -2,11 +2,13 @@ package com.blogapp.bloggy.service.impl;
 
 import com.blogapp.bloggy.entity.Category;
 import com.blogapp.bloggy.entity.Post;
+import com.blogapp.bloggy.entity.User;
 import com.blogapp.bloggy.exception.ResourceNotFoundException;
 import com.blogapp.bloggy.payload.PostDto;
 import com.blogapp.bloggy.payload.PostResponse;
 import com.blogapp.bloggy.repository.CategoryRepository;
 import com.blogapp.bloggy.repository.PostRepository;
+import com.blogapp.bloggy.repository.UserRepository;
 import com.blogapp.bloggy.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,17 +25,21 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
     private CategoryRepository categoryRepository;
+    private UserRepository userRepository;
     private ModelMapper mapper;
 
-    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper, CategoryRepository categoryRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper, UserRepository userRepository, CategoryRepository categoryRepository) {
         this.postRepository = postRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
     @Override
     public PostDto createPost(PostDto postDto) {
         Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", Long.toString(postDto.getCategoryId())));
+        User user = userRepository.findById(postDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", Long.toString(postDto.getUserId())));
+
         Post post = mapToEntity(postDto); // Convert DTO to Entity to write it to database
         post.setCategory(category);
         Post newPost = postRepository.save(post); // save to database
@@ -67,9 +73,10 @@ public class PostServiceImpl implements PostService {
     public PostDto updatePost(long id, PostDto postDto) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", Long.toString(id)));
         Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", Long.toString(postDto.getCategoryId())));
+        User user = userRepository.findById(postDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", Long.toString(postDto.getUserId())));
+
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setDescription(postDto.getDescription());
         post.setCategory(category);
         Post updatedPost = postRepository.save(post);
         return mapToDto(updatedPost);
@@ -92,6 +99,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostDto> getPostsByUserId(Long userId) {
+        System.out.println("HERE 1st");
+        // Check if this category exist or not
+        userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","id",Long.toString(userId)));
+        // get posts by cat id
+        System.out.println("HERE");
+        List<Post> posts = postRepository.findByUserId(userId);
+        return posts.stream().map((post)->mapToDto(post)).collect(Collectors.toList());
+    }
+
+    @Override
     public PostResponse searchPosts(String query, int pageNo, int pageSize, String sortBy, String sortDir) {
         // Handling sorting:
         Sort sort = (sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -110,7 +128,12 @@ public class PostServiceImpl implements PostService {
 
 
     private PostDto mapToDto(Post post) {
-        return mapper.map(post, PostDto.class);
+        PostDto postDto = mapper.map(post, PostDto.class);
+       // return mapper.map(post, PostDto.class);
+
+        postDto.setUserName(post.getUser().getName());
+        postDto.setCategoryName(post.getCategory().getName());
+        return postDto;
     }
 
     private Post mapToEntity(PostDto postDto) {

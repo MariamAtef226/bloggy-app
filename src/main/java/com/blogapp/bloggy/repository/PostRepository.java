@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//@Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByCategoryId(Long categoryId);
+    List<Post> findByUserId(Long userId);
 
     // JPQL queries
 //    @Query("SELECT p from Post p WHERE " +

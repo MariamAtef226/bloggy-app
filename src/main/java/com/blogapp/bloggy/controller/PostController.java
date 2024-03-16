@@ -43,17 +43,22 @@ public class PostController {
 
     //Include search in get route
     @GetMapping
-    public PostResponse getPosts(@RequestParam(value="query",defaultValue = "" ,required = false) String query,
-                                 @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
+    public PostResponse getPosts(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NO, required = false) int pageNo,
                                  @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
                                  @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-                                 @RequestParam(value="sortDir",defaultValue = AppConstants.DEFAULT_SORT_DIR,required = false) String sortDir) {
+                                 @RequestParam(value="sortDir",defaultValue = AppConstants.DEFAULT_SORT_DIR,required = false) String sortDir,
+                                 @RequestParam(value="query",defaultValue = "" ,required = false) String query) {
         if (query.equalsIgnoreCase("")){
             return postService.getPosts(pageNo, pageSize,sortBy, sortDir);
         }
         else{
             return postService.searchPosts(query,pageNo, pageSize,sortBy, sortDir);
         }
+    }
+
+    @GetMapping("/user/{id}")
+    public List<PostDto> getPostsByUserId(@PathVariable Long id) {
+        return postService.getPostsByUserId(id);
     }
 
     @GetMapping("/{id}")
