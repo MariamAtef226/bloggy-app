@@ -28,7 +28,6 @@ public class UserDto {
     @NotEmpty(message = "Email can't be null or empty")
     @Email
     private String email;
-    @NotEmpty(message = "Password can't be null or empty")
     private String password;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
