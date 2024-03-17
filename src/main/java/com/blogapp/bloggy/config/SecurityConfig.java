@@ -23,17 +23,18 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
-@EnableMethodSecurity
+@Configuration // because this is a configuration class
+@EnableMethodSecurity // to activate method level annotations
+// for swagger auth
 @SecurityScheme(name = "Bear Authentication",
         type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         scheme = "bearer")
 
 public class SecurityConfig {
-    private UserDetailsService userDetailsService;
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private UserDetailsService userDetailsService; // this interface defines a method to retrieve user details (source is based on further configurations)
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint; // guard ycheck en fe token
+    private JwtAuthenticationFilter jwtAuthenticationFilter; // guard ycheck m3 kol access en eltoken valid
 
     public SecurityConfig(UserDetailsService userDetailsService,
                           JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
@@ -53,6 +54,8 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    // the auth manager -->  sets up the system to check if users trying to log in have valid credentials.
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
@@ -64,9 +67,9 @@ public class SecurityConfig {
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't use session to store state or handle authentication - treat every request as a new unknown one
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // m3aya 2 filters
         return http.build();
     }
 }

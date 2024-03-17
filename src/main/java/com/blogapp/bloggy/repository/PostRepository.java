@@ -28,11 +28,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "or p.content LIKE CONCAT('%',:query,'%')", nativeQuery = true)
     Page<Post> searchPosts(String query, Pageable pageable);
 
-    @Override
-    @Transactional(timeout = 10)
-    void deleteById(Long Id);
+//    @Override
+//    @Transactional(timeout = 10)
+//    void deleteById(Long Id);
 
-    @Override
-    @Transactional(propagation = Propagation.NEVER)
-    <S extends Post> S save(S entity);
+//    @Override
+//    @Transactional(propagation = Propagation.NEVER)
+//    <S extends Post> S save(S entity);
 }

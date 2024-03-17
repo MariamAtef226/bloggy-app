@@ -22,7 +22,6 @@ public class Post {
     private long id;
     @Column(nullable=false)
     private String title;
-//    private  String description;
     private String content;
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -30,8 +29,6 @@ public class Post {
     private LocalDateTime updatedAt;
 
     // "mapped by one post" to many comments
-    // orphanRemoval = on delete cascade
-    // cascadeType.All --> all operations will cascade
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 

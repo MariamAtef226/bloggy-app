@@ -26,11 +26,6 @@ public class PostDto {
     @Size(min = 2, message = "Post title should have at least 2 characters")
     private String title;
 
-//    @Schema(
-//            description = "Post Description"
-//    )
-//    private String description;
-
     @NotEmpty
     @Size(max = 2000, message = "Post content's length shouldn't exceed 2000 characters")
     private String content;

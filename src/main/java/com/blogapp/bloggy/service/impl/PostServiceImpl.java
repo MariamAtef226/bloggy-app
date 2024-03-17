@@ -39,11 +39,12 @@ public class PostServiceImpl implements PostService {
     public PostDto createPost(PostDto postDto) {
         Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", Long.toString(postDto.getCategoryId())));
         User user = userRepository.findById(postDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", Long.toString(postDto.getUserId())));
-
-        Post post = mapToEntity(postDto); // Convert DTO to Entity to write it to database
+        Post post = mapper.map(postDto,Post.class);
+        // set skipped attributes
         post.setCategory(category);
+        post.setUser(user);
         Post newPost = postRepository.save(post); // save to database
-        return mapToDto(newPost);  // convert returned entity to dto & return it to client
+        return mapper.map(newPost,PostDto.class);  // convert returned entity to dto & return it to client
     }
 
     @Override
@@ -78,8 +79,10 @@ public class PostServiceImpl implements PostService {
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setCategory(category);
+        // post.setUser(user);  // we can't chane post to belong to another user
+
         Post updatedPost = postRepository.save(post);
-        return mapToDto(updatedPost);
+        return mapToDto(post);
         // A Cleaner code can be using modelmapper package --> to be studied later on
     }
 
@@ -100,11 +103,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> getPostsByUserId(Long userId) {
-        System.out.println("HERE 1st");
-        // Check if this category exist or not
+        // Check if this user exist or not
         userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","id",Long.toString(userId)));
-        // get posts by cat id
-        System.out.println("HERE");
+        // get posts by user id
         List<Post> posts = postRepository.findByUserId(userId);
         return posts.stream().map((post)->mapToDto(post)).collect(Collectors.toList());
     }
@@ -129,8 +130,6 @@ public class PostServiceImpl implements PostService {
 
     private PostDto mapToDto(Post post) {
         PostDto postDto = mapper.map(post, PostDto.class);
-       // return mapper.map(post, PostDto.class);
-
         postDto.setUserName(post.getUser().getName());
         postDto.setCategoryName(post.getCategory().getName());
         return postDto;
