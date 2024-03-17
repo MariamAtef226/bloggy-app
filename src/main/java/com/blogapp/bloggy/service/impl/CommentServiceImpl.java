@@ -2,12 +2,14 @@ package com.blogapp.bloggy.service.impl;
 
 import com.blogapp.bloggy.entity.Comment;
 import com.blogapp.bloggy.entity.Post;
+import com.blogapp.bloggy.entity.User;
 import com.blogapp.bloggy.exception.BlogApiException;
 import com.blogapp.bloggy.exception.ResourceNotFoundException;
 import com.blogapp.bloggy.payload.CommentDto;
 import com.blogapp.bloggy.payload.CommentResponse;
 import com.blogapp.bloggy.repository.CommentRepository;
 import com.blogapp.bloggy.repository.PostRepository;
+import com.blogapp.bloggy.repository.UserRepository;
 import com.blogapp.bloggy.service.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -24,19 +26,24 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
     private PostRepository postRepository;
+    private UserRepository userRepository;
     private ModelMapper mapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper mapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository,  ModelMapper mapper) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
     @Override
     public CommentDto createComment(long postId, CommentDto commentDto) {
         Comment comment = mapToEntity(commentDto);
+        User user = userRepository.findById(commentDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", Long.toString(commentDto.getUserId())));
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Id", Long.toString(postId)));
+
         comment.setPost(post);
+        comment.setUser(user);
         Comment newComment = commentRepository.save(comment);
         return mapToDto(newComment);
     }
@@ -76,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
             throw new BlogApiException(HttpStatus.BAD_REQUEST,"This Comment doesn't belong to this post!");
 
         comment.setBody(commentDto.getBody());
-        comment.setName(commentDto.getName());
+
         Comment updatedComment = commentRepository.save(comment);
         return mapToDto(updatedComment);
     }
@@ -91,7 +98,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDto mapToDto(Comment comment) {
-        return mapper.map(comment,CommentDto.class);
+        CommentDto commentDto = mapper.map(comment,CommentDto.class);
+        commentDto.setUserName(comment.getUser().getUsername());
+        commentDto.setName(comment.getUser().getName());
+
+        return  commentDto;
     }
 
     private Comment mapToEntity(CommentDto commentDto) {

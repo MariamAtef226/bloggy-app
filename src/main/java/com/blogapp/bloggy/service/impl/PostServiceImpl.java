@@ -74,7 +74,7 @@ public class PostServiceImpl implements PostService {
     public PostDto updatePost(long id, PostDto postDto) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", Long.toString(id)));
         Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", Long.toString(postDto.getCategoryId())));
-        User user = userRepository.findById(postDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", Long.toString(postDto.getUserId())));
+        // User user = userRepository.findById(postDto.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", Long.toString(postDto.getUserId())));
 
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());

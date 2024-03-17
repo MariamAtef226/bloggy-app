@@ -1,6 +1,8 @@
 package com.blogapp.bloggy;
 
+import com.blogapp.bloggy.entity.Comment;
 import com.blogapp.bloggy.entity.Post;
+import com.blogapp.bloggy.payload.CommentDto;
 import com.blogapp.bloggy.payload.PostDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -42,6 +44,11 @@ public class BloggyApplication {
             protected void configure() {
                 skip().setUserName(null);
                 skip().setCategoryName(null);
+            }
+        });
+        modMap.addMappings(new PropertyMap<Comment, CommentDto>() {
+            protected void configure() {
+                skip().setUserName(null);
             }
         });
         return modMap;

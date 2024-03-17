@@ -19,8 +19,6 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
     private String body;
-    private String name;
-    private  String username;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
@@ -30,5 +28,8 @@ public class Comment {
     @JoinColumn(name="post_id", nullable = false)
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
 }

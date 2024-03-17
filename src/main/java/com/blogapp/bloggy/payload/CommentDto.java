@@ -20,10 +20,9 @@ public class CommentDto {
     @NotEmpty(message = "Comment shouldn't be null or empty")
     @Size(max=1500,message = "Comment's size can't exceed 1500 characters")
     private String body;
-    @NotEmpty(message = "Username of comment author shouldn't be null or empty")
-    private String username;
-    @NotEmpty(message = "Name of comment author shouldn't be null or empty")
-    private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long userId;
+    private String userName;
+    private String name;
 }
