@@ -57,8 +57,13 @@ public class PostController {
     }
 
     @GetMapping("/user/{id}")
-    public List<PostDto> getPostsByUserId(@PathVariable Long id) {
+    public List<PostDto> getPostsByUser(@PathVariable Long id) {
         return postService.getPostsByUserId(id);
+    }
+
+    @GetMapping("/category/{id}")
+    public List<PostDto> getPostsByCategory(@PathVariable(name="id") Long id){
+        return postService.getPostsByCategoryId(id);
     }
 
     @GetMapping("/{id}")
@@ -79,8 +84,5 @@ public class PostController {
         return new ResponseEntity<>("Post has been deleted successfully!", HttpStatus.OK);
     }
 
-    @GetMapping("/category/{id}")
-    public List<PostDto> getPostsByCategory(@PathVariable(name="id") Long id){
-        return postService.getPostsByCategoryId(id);
-    }
+
 }

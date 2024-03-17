@@ -24,7 +24,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     // SQL queries
     @Query(value = "SELECT * from posts p WHERE " +
             "p.title LIKE CONCAT('%',:query,'%') " +
-            "or p.description LIKE CONCAT('%',:query,'%') " +
             "or p.content LIKE CONCAT('%',:query,'%')", nativeQuery = true)
     Page<Post> searchPosts(String query, Pageable pageable);
 

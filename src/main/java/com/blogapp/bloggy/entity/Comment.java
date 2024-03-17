@@ -26,7 +26,7 @@ public class Comment {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     // many "comments" to one "post"
-    @ManyToOne(fetch = FetchType.LAZY) // lazy = tells hibernete to only return related data when using the relation
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="post_id", nullable = false)
     private Post post;
 

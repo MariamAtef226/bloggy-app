@@ -75,15 +75,10 @@ public class CommentServiceImpl implements CommentService {
         if (comment.getPost().getId() != post.getId())
             throw new BlogApiException(HttpStatus.BAD_REQUEST,"This Comment doesn't belong to this post!");
 
-        if(commentDto.getBody()  != null){
-            comment.setBody(commentDto.getBody());
-        }
-        if(commentDto.getName()  != null){
-            comment.setName(commentDto.getName());
-        }
+        comment.setBody(commentDto.getBody());
+        comment.setName(commentDto.getName());
         Comment updatedComment = commentRepository.save(comment);
         return mapToDto(updatedComment);
-        // A Cleaner code can be using modelmapper package --> to be studied later on
     }
 
     @Override
