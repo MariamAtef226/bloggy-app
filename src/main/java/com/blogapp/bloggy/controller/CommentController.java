@@ -7,6 +7,7 @@ import com.blogapp.bloggy.utils.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class CommentController {
     public CommentController(CommentService commentService){
         this.commentService = commentService;
     }
+    @PreAuthorize("permitAll()")
     @PostMapping("/{post_id}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable(name="post_id") long postId,@Valid @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
@@ -35,11 +37,12 @@ public class CommentController {
         return commentService.getCommentById(postId,id);
     }
 
+    @PreAuthorize("permitAll()")
     @PutMapping("/{post_id}/comments/{comment_id}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable(name="post_id") long postId, @PathVariable(name="comment_id") long id, @Valid @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.updateComment(postId,id,commentDto), HttpStatus.OK);
     }
-
+    @PreAuthorize("permitAll()")
     @DeleteMapping("{post_id}/comments/{comment_id}")
     public ResponseEntity<String> deleteComment(@PathVariable(name="post_id") long postId, @PathVariable(name="comment_id") long id){
         commentService.deleteComment(postId,id);

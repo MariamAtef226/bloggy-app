@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  mysqldb: # service name
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_DATABASE: blogapp
+
+  bloggy-app:
+    container_name: bloggy-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure

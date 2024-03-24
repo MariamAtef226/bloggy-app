@@ -37,7 +37,6 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> getCategory(@PathVariable(name = "id") Long id) {
         return new ResponseEntity<>(categoryService.getCategory(id), HttpStatus.OK);
     }
-
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "Bear Authentication")
