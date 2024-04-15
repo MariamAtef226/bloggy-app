@@ -32,14 +32,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         scheme = "bearer")
 
 public class SecurityConfig {
-    private UserDetailsService userDetailsService; // this interface defines a method to retrieve user details (source is based on further configurations)
+    //  private UserDetailsService userDetailsService; // this interface defines a method to retrieve user details (source is based on further configurations)
+    // it's moved to JwtAuthenticationFilter class
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint; // guard ycheck en fe token
     private JwtAuthenticationFilter jwtAuthenticationFilter; // guard ycheck m3 kol access en eltoken valid
 
-    public SecurityConfig(UserDetailsService userDetailsService,
+    public SecurityConfig(
                           JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
                           JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.userDetailsService = userDetailsService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
@@ -65,8 +65,8 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .httpBasic(Customizer.withDefaults()) // uses basic auth : username & password
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)) // handles exceptions related to authentication
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // don't use session to store state or handle authentication - treat every request as a new unknown one
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // m3aya 2 filters

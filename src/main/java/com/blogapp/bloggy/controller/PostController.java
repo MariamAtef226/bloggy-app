@@ -73,13 +73,16 @@ public class PostController {
 
     @PreAuthorize("permitAll()")
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<PostDto> updatePost(@PathVariable("id") long id, @Valid @RequestBody PostDto post) {
         return ResponseEntity.ok(postService.updatePost(id, post));
     }
 
     @PreAuthorize("permitAll()")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<String> deletePost(@PathVariable("id") long id) {
+
         postService.deletePost(id);
         return new ResponseEntity<>("Post has been deleted successfully!", HttpStatus.OK);
     }

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler { // ResponseEntityExceptionHandler is for validation exceptions not the others
     // handle specific exceptions (elly e7na m3rfeenhom)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BlogApiException.class)
     public ResponseEntity<ErrorDetails> handleBlogApiException(BlogApiException exception, WebRequest webRequest) {
         ErrorDetails err = new ErrorDetails(new Date(), exception.getMessage(),webRequest.getDescription(false));
-        return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST );
     }
     // handle global exceptions
     @ExceptionHandler(Exception.class)

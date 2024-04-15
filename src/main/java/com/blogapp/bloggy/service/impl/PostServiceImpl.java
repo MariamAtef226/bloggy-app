@@ -3,6 +3,7 @@ package com.blogapp.bloggy.service.impl;
 import com.blogapp.bloggy.entity.Category;
 import com.blogapp.bloggy.entity.Post;
 import com.blogapp.bloggy.entity.User;
+import com.blogapp.bloggy.exception.BlogApiException;
 import com.blogapp.bloggy.exception.ResourceNotFoundException;
 import com.blogapp.bloggy.payload.PostDto;
 import com.blogapp.bloggy.payload.PostResponse;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

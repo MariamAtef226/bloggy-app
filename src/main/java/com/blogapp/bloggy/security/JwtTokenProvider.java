@@ -1,5 +1,6 @@
 package com.blogapp.bloggy.security;
 
+import com.blogapp.bloggy.entity.Role;
 import com.blogapp.bloggy.exception.BlogApiException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtTokenProvider {
@@ -40,6 +42,8 @@ public class JwtTokenProvider {
         return Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(token).getPayload().getSubject();
     }
 
+
+
     // validate jwt token
     public boolean validateToken (String token){
         try {
@@ -48,7 +52,6 @@ public class JwtTokenProvider {
         }
         catch (MalformedJwtException malformedJwtException){
             throw new BlogApiException(HttpStatus.BAD_REQUEST, "Invalid JWT Token");
-
         }
         catch (ExpiredJwtException expiredJwtException){
             throw new BlogApiException(HttpStatus.BAD_REQUEST, "Expired JWT Token");
