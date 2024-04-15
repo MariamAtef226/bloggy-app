@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    Page<Comment> findByPostId(long id, Pageable pageable);
+    List<Comment> findByPostId(long id);
 }

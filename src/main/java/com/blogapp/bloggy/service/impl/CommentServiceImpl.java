@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,21 +50,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse getCommentsByPostId(long postId, int pageNo, int pageSize, String sortBy, String sortDir) {
+    public List<CommentDto> getCommentsByPostId(long postId) {
         // Check first if some post with this id exist or not:
         Post post = postRepository.findById((Long)postId).orElseThrow(() -> new ResourceNotFoundException("Post", "Id", Long.toString(postId)));
         // Handling sorting:
-        Sort sort = (sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        //Sort sort = (sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         // Create a pageable object that will handle both pagination & sorting
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+       // Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         // Create a page instance
-        Page<Comment> comments = commentRepository.findByPostId(postId, pageable);
+        List<Comment> comments = commentRepository.findByPostId(postId);
         // get the content from that page --> entity not DTO
-        List<Comment> listOfComments = comments.getContent();
+        //List<Comment> listOfComments = comments.getContent();
         // convert to DTO
-        List<CommentDto> content = listOfComments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
+        List<CommentDto> commentsDto = comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
         // Make a response object & return it
-        return new CommentResponse(content, comments.getNumber(), comments.getSize(), comments.getTotalElements(), comments.getTotalPages(), comments.isLast());
+        return commentsDto;
+        // ()CommentResponse(content, comments.getNumber(), comments.getSize(), comments.getTotalElements(), comments.getTotalPages(), comments.isLast());
     }
 
     @Override
@@ -101,7 +103,6 @@ public class CommentServiceImpl implements CommentService {
         CommentDto commentDto = mapper.map(comment,CommentDto.class);
         commentDto.setUserName(comment.getUser().getUsername());
         commentDto.setName(comment.getUser().getName());
-
         return  commentDto;
     }
 
