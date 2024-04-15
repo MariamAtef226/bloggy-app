@@ -69,7 +69,7 @@ public class BloggyApplication implements CommandLineRunner {
         System.out.println("Bloggy app is running ...");
     }
 
-    // Logic to insert roles to database
+    // Logic to insert roles/categories to database
     @Override
     public void run(String ...args)throws Exception{
 //        Role role_admin = new Role();
