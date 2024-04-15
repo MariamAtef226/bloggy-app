@@ -18,6 +18,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(length = 1500)
+
     private String body;
     @CreationTimestamp
     private LocalDateTime createdAt;

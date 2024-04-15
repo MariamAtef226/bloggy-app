@@ -21,6 +21,6 @@ public class SignupDto {
     @NotEmpty
     private String password;
     @Email
-    @NotEmpty
+    @NotEmpty(message = "Email can't be null or empty")
     private String email;
 }

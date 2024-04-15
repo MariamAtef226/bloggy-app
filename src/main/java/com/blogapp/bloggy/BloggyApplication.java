@@ -20,7 +20,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@SpringBootApplication
 @OpenAPIDefinition(
         info = @Info(
                 title = "Bloggy App REST APIs",
@@ -33,14 +32,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
                 license = @License(
                         name = "Apache 2.0"
                 )
-        ),
-        externalDocs = @ExternalDocumentation(
-                description = "Spring Boot external description"
-                // url="" external documentation source
         )
+//        externalDocs = @ExternalDocumentation(
+//                description = "Spring Boot external description"
+//                // url="" external documentation source
+//        )
 )
+@SpringBootApplication
 public class BloggyApplication implements CommandLineRunner {
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modMap = new ModelMapper();
@@ -53,6 +52,7 @@ public class BloggyApplication implements CommandLineRunner {
         modMap.addMappings(new PropertyMap<Comment, CommentDto>() {
             protected void configure() {
                 skip().setUserName(null);
+                skip().setName(null);
             }
         });
         return modMap;
@@ -65,9 +65,14 @@ public class BloggyApplication implements CommandLineRunner {
         System.out.println("Bloggy app is running ...");
     }
 
+    // Logic to insert roles to database
     @Override
     public void run(String ...args)throws Exception{
-
+//        Role role_admin = new Role();
+//        role_admin.setName("ROLE_ADMIN");
+//        roleRepository.save(role_admin);
+//        Role role_user = new Role();
+//        role_user.setName("ROLE_USER");
+//        roleRepository.save(role_user);
     }
-
 }

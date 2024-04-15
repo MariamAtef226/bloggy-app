@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class CommentDto {
     private long id;
     @NotEmpty(message = "Comment shouldn't be null or empty")
-    @Size(max=1500,message = "Comment's size can't exceed 1500 characters")
+    @Size(max= 1500,message = "Comment's size can't exceed 1500 characters")
     private String body;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

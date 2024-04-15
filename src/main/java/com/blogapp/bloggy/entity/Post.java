@@ -22,6 +22,7 @@ public class Post {
     private long id;
     @Column(nullable=false)
     private String title;
+    @Column(length = 2000)
     private String content;
     @CreationTimestamp
     private LocalDateTime createdAt;

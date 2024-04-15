@@ -18,10 +18,10 @@ import java.util.Set;
 )
 public class PostDto {
     private long id;
-
-    @Schema(
-            description = "Post Title"
-    )
+//
+//    @Schema(
+//            description = "Post Title"
+//    )
     @NotEmpty
     @Size(min = 2, message = "Post title should have at least 2 characters")
     private String title;
