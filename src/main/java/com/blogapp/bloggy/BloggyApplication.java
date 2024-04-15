@@ -1,10 +1,12 @@
 package com.blogapp.bloggy;
 
+import com.blogapp.bloggy.entity.Category;
 import com.blogapp.bloggy.entity.Comment;
 import com.blogapp.bloggy.entity.Post;
 import com.blogapp.bloggy.entity.Role;
 import com.blogapp.bloggy.payload.CommentDto;
 import com.blogapp.bloggy.payload.PostDto;
+import com.blogapp.bloggy.repository.CategoryRepository;
 import com.blogapp.bloggy.repository.RoleRepository;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -59,6 +61,8 @@ public class BloggyApplication implements CommandLineRunner {
     }
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BloggyApplication.class, args);
@@ -74,5 +78,12 @@ public class BloggyApplication implements CommandLineRunner {
 //        Role role_user = new Role();
 //        role_user.setName("ROLE_USER");
 //        roleRepository.save(role_user);
+//        String [] categories = {"Food","Travel","Fashion & Beauty","Music","Cinema & TV", "Science & Literature","Sports"};
+//        for (String categoryName : categories) {
+//            Category category = new Category();
+//            category.setName(categoryName);
+//            categoryRepository.save(category);
+//        }
+
     }
 }
