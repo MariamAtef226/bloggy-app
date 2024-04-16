@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class InvoiceData {
-    private String sessionId;
+    private String SessionId;
+    private Integer InvoiceValue;
 }
